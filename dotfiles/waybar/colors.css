@@ -1,24 +1,24 @@
-/* Waybar Colors — Catppuccin Mocha (Dark) */
-@define-color bg-bar rgba(30, 30, 46, 0.85);
-@define-color bg-module rgba(49, 50, 68, 0.9);
-@define-color accent-blue #89b4fa;
-@define-color accent-purple #cba6f7;
-@define-color accent-green #a6e3a1;
-@define-color accent-red #f38ba8;
-@define-color accent-orange #fab387;
-@define-color foreground #cdd6f4;
+/* Waybar Colors — Gruvbox (Dark) */
+@define-color bg-bar rgba(40, 40, 40, 0.85);
+@define-color bg-module rgba(60, 56, 54, 0.9);
+@define-color accent-blue #83a598;
+@define-color accent-purple #d3869b;
+@define-color accent-green #b8bb26;
+@define-color accent-red #fb4934;
+@define-color accent-orange #fe8019;
+@define-color foreground #ebdbb2;
 
-@define-color base #1e1e2e;
-@define-color mantle #181825;
-@define-color crust #11111b;
-@define-color surface0 #313244;
-@define-color surface1 #45475a;
-@define-color overlay0 #6c7086;
-@define-color text #cdd6f4;
-@define-color subtext0 #a6adc8;
-@define-color blue #89b4fa;
-@define-color mauve #cba6f7;
-@define-color red #f38ba8;
-@define-color green #a6e3a1;
-@define-color yellow #f9e2af;
-@define-color peach #fab387;
+@define-color base #282828;
+@define-color mantle #3c3836;
+@define-color crust #1d2021;
+@define-color surface0 #504945;
+@define-color surface1 #665c54;
+@define-color overlay0 #7c6f64;
+@define-color text #ebdbb2;
+@define-color subtext0 #a89984;
+@define-color blue #83a598;
+@define-color mauve #d3869b;
+@define-color red #fb4934;
+@define-color green #b8bb26;
+@define-color yellow #fabd2f;
+@define-color peach #fe8019;
