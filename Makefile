@@ -1,4 +1,4 @@
-.PHONY: help install full base dotfiles packages fonts fish flatpak lint clean check health doctor status test restore prereq
+.PHONY: help install full base dotfiles packages fonts fish flatpak lint clean check health doctor fix status test restore prereq zram btrfs firewall
 
 help: ## Show this help
 	@echo ""
@@ -16,6 +16,7 @@ help: ## Show this help
 	@echo "    make check       Run declarative post-install validation"
 	@echo "    make health      Run runtime system-health checks"
 	@echo "    make doctor      Run diagnostic intelligence engine"
+	@echo "    make fix         Interactively apply diagnostic remediations"
 	@echo "    make status      Run full system status scorecard"
 	@echo "    make test        Execute automated test suite"
 	@echo "    make full V=1    Verbose full install"
@@ -24,7 +25,7 @@ install: ## Run interactive installer
 	@chmod +x install.sh bin/arch-postinstall
 	@bash install.sh $(if $(V),-v,) $(if $(DRY),-d,)
 
-full: ## Full install (base + Hyprland + dotfiles)
+full: ## Full install (base + Hyprland + dotfiles + optimizations)
 	@chmod +x install.sh bin/arch-postinstall
 	@bash install.sh $(if $(V),-v,) $(if $(DRY),-d,) full
 
@@ -48,6 +49,10 @@ doctor: ## Diagnose system issues and display suggested remediation commands
 	@chmod +x bin/arch-postinstall
 	@./bin/arch-postinstall doctor $(if $(V),-v,) $(if $(JSON),--json,)
 
+fix: ## Interactively apply suggested remediation commands from doctor
+	@chmod +x bin/arch-postinstall
+	@./bin/arch-postinstall fix $(if $(V),-v,)
+
 status: ## Run full status dashboard (configuration validation + runtime health)
 	@chmod +x bin/arch-postinstall
 	@./bin/arch-postinstall status $(if $(V),-v,) $(if $(JSON),--json,)
@@ -66,6 +71,15 @@ prereq: ## Check for missing prerequisites
 		fi \
 	done
 	@echo "Done."
+
+zram: ## Setup ZRAM swap
+	@bash -c 'source modules/core.sh && source modules/system.sh && setup_zram'
+
+btrfs: ## Setup Btrfs Snapper automated snapshots
+	@bash -c 'source modules/core.sh && source modules/btrfs.sh && setup_btrfs_snapshots'
+
+firewall: ## Setup UFW firewall
+	@bash -c 'source modules/core.sh && source modules/system.sh && setup_firewall'
 
 packages: ## Install Hyprland packages only
 	@bash -c 'source modules/core.sh && source modules/packages.sh && install_packages_from_config config/hyprland.yaml'

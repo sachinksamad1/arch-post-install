@@ -71,10 +71,12 @@ graph TD
 | Module | Responsibility | Key Features |
 |---|---|---|
 | `core.sh` | Orchestration & engine utilities | YAML parser with fallback regex engine, logging handlers, network and root privilege validation. |
-| `system.sh` | Core system provisioning | System clock synchronization, pacman mirror optimization, font installation, default shell configuration. |
+| `system.sh` | Core system provisioning & tuning | Pacman tuning (parallel downloads), ZRAM swap, UFW firewall, Bluetooth auto-enable, fonts, shell. |
+| `btrfs.sh` | Disaster recovery & snapshots | Snapper subvolume snapshot configuration, automated pre/post pacman snapshots via `snap-pac`, retention timers. |
 | `packages.sh` | Package lifecycle manager | Batch pacman and AUR installation via `yay`, missing dependency resolution, package presence verification. |
 | `services.sh` | Systemd service manager | Parses and enables systemd `.service` and `.timer` units for both system and user bus. |
 | `users.sh` | User accounts & permissions | Default shell assignment (Fish), supplementary group membership (`wheel`, `video`, `input`, `audio`), locale & timezone. |
+| `flatpak.sh` | Flatpak & sandboxed apps | Flatpak runtime initialization, Flathub remote registration, and declarative Flatpak application deployment. |
 | `dotfiles.sh` | Configuration deployment | Symlinks `dotfiles/*` into `$HOME/.config/` with automatic `.bak` preservation. |
 
 ---

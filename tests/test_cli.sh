@@ -58,14 +58,22 @@ else
     echo "FAIL: List output missing expected categories" >&2
 fi
 
-# Test 4: Invalid option exit code (must be 3)
+# Test 4: Help includes fix and --fix options
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "${help_out}" | grep -q -- "--fix" && echo "${help_out}" | grep -q "fix \[cat\.\.\.\]"; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "FAIL: Help output missing --fix or fix command" >&2
+fi
+
+# Test 5: Invalid option exit code (must be 3)
 set +e
 "${BIN}" --invalid-flag-123 &>/dev/null
 inv_exit=$?
 set -e
 assert_eq "3" "${inv_exit}" "Invalid flag should exit with code 3"
 
-# Test 5: Invalid subcommand exit code (must be 3)
+# Test 6: Invalid subcommand exit code (must be 3)
 set +e
 "${BIN}" nonexistentcommand &>/dev/null
 inv_cmd_exit=$?

@@ -17,6 +17,7 @@ source "${SCRIPT_DIR}/modules/services.sh"
 source "${SCRIPT_DIR}/modules/users.sh"
 source "${SCRIPT_DIR}/modules/dotfiles.sh"
 source "${SCRIPT_DIR}/modules/system.sh"
+source "${SCRIPT_DIR}/modules/btrfs.sh"
 source "${SCRIPT_DIR}/modules/flatpak.sh"
 
 # Load profiles (plugin-based)
@@ -33,7 +34,7 @@ show_help() {
 Usage: ./install.sh [OPTIONS] [MODE]
 
 Modes:
-  full        Full install (Base + Hyprland + dotfiles)
+  full        Full install (Base + Hyprland + dotfiles + optimizations)
   base        Base system only (no DE)
   dotfiles    Deploy dotfiles only
 
@@ -118,15 +119,21 @@ confirm_install() {
 
     case "${MODE}" in
         full)
+            echo -e "  • Optimize pacman (parallel downloads, color)"
             echo -e "  • Update the system (pacman -Syu)"
             echo -e "  • Install base + Hyprland packages"
+            echo -e "  • Configure ZRAM swap and UFW firewall"
+            echo -e "  • Configure Btrfs Snapper automated snapshots (if Btrfs)"
             echo -e "  • Enable system services"
             echo -e "  • Configure user account"
             echo -e "  • Deploy dotfiles (symlinked to ~/.config/)"
             ;;
         base)
+            echo -e "  • Optimize pacman (parallel downloads, color)"
             echo -e "  • Update the system (pacman -Syu)"
             echo -e "  • Install base packages"
+            echo -e "  • Configure ZRAM swap and UFW firewall"
+            echo -e "  • Configure Btrfs Snapper automated snapshots (if Btrfs)"
             echo -e "  • Enable base services"
             echo -e "  • Configure user account"
             ;;
@@ -175,10 +182,15 @@ main() {
 
     case "${MODE}" in
         full)
+            run_cmd tune_pacman
             run_cmd apply_system_updates
             run_cmd install_base_packages
             run_cmd enable_base_services
             run_cmd setup_users
+            run_cmd setup_zram
+            run_cmd setup_firewall
+            run_cmd setup_btrfs_snapshots
+            run_cmd tune_bluetooth
             run_cmd ensure_yay
             run_cmd setup_system_fonts
             run_cmd setup_system_shell
@@ -186,10 +198,14 @@ main() {
             run_cmd setup_hyprland
             ;;
         base)
+            run_cmd tune_pacman
             run_cmd apply_system_updates
             run_cmd install_base_packages
             run_cmd enable_base_services
             run_cmd setup_users
+            run_cmd setup_zram
+            run_cmd setup_firewall
+            run_cmd setup_btrfs_snapshots
             run_cmd setup_system_fonts
             run_cmd setup_system_shell
             ;;
@@ -214,6 +230,7 @@ main() {
         echo -e "    Validate setup:    ${BOLD}./bin/arch-postinstall check${NC}"
         echo -e "    System health:     ${BOLD}./bin/arch-postinstall health${NC}"
         echo -e "    Diagnose issues:   ${BOLD}./bin/arch-postinstall doctor${NC}"
+        echo -e "    Apply fixes:       ${BOLD}./bin/arch-postinstall doctor --fix${NC}"
         echo ""
     fi
     echo -e "  ${YELLOW}Reboot recommended:${NC} ${BOLD}sudo reboot${NC}"

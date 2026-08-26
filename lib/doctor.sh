@@ -3,7 +3,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # Library: doctor.sh
 # Description: Diagnostic intelligence engine. Translates failures and warnings
-#              into actionable root-cause analysis and copy-paste fixes.
+#              into actionable root-cause analysis and automated/interactive remediation.
 # ──────────────────────────────────────────────────────────────────────────────
 
 # shellcheck disable=SC2154,SC2034
@@ -44,7 +44,6 @@ run_doctor_analysis() {
 
     echo -e "${C_BOLD}Found ${C_RED}${issues_found}${C_RESET}${C_BOLD} issue(s) requiring attention:${C_RESET}\n"
 
-    local current_cat=""
     local num=0
 
     for record in "${CHECKS_RESULTS[@]}"; do
@@ -88,7 +87,79 @@ run_doctor_analysis() {
 
     echo -e "${C_GRAY}────────────────────────────────────────────────────────────${C_RESET}"
     echo ""
-    echo -e "${C_YELLOW}${C_BOLD}Note:${C_RESET} Doctor runs in read-only mode and does not modify the system."
-    echo -e "Review and execute the suggested remediation commands above as needed."
+    echo -e "${C_YELLOW}${C_BOLD}Note:${C_RESET} Doctor runs in read-only mode by default."
+    echo -e "Execute remediation automatically with: ${C_BOLD}./bin/arch-postinstall doctor --fix${C_RESET}"
+    echo ""
+}
+
+run_doctor_fix() {
+    local -a fixable_records=()
+
+    for record in "${CHECKS_RESULTS[@]}"; do
+        IFS='|' read -r cat name status msg details fix exp cur <<< "${record}"
+        if [[ ("${status}" == "FAIL" || "${status}" == "WARN") && -n "${fix}" ]]; then
+            fixable_records+=("${record}")
+        fi
+    done
+
+    print_banner "Arch Post-Installation Doctor" "Interactive Remediation Engine (--fix)"
+
+    if [[ ${#fixable_records[@]} -eq 0 ]]; then
+        echo -e "${C_GREEN}${C_BOLD}✔ No automated remediations required!${C_RESET}"
+        echo ""
+        return 0
+    fi
+
+    echo -e "${C_BOLD}Found ${C_CYAN}${#fixable_records[@]}${C_RESET}${C_BOLD} remediation(s) to execute:${C_RESET}\n"
+
+    local applied=0
+    local skipped=0
+    local failed=0
+
+    for record in "${fixable_records[@]}"; do
+        IFS='|' read -r cat name status msg details fix exp cur <<< "${record}"
+
+        echo -e "${C_GRAY}────────────────────────────────────────────────────────────${C_RESET}"
+        echo -e "  ${C_BOLD}Issue:${C_RESET}       ${msg}"
+        echo -e "  ${C_BOLD}Category:${C_RESET}    ${cat}"
+        echo -e "  ${C_BOLD}Command:${C_RESET}     ${C_GREEN}${C_BOLD}${fix}${C_RESET}"
+        echo ""
+
+        local execute=false
+        if [[ "${AUTO_YES:-false}" == true ]]; then
+            execute=true
+        else
+            read -rp "  Execute this fix? [y/N/q]: " yn
+            case "${yn}" in
+                [Yy]*) execute=true ;;
+                [Qq]*)
+                    echo -e "\n${C_YELLOW}Aborted remediation process.${C_RESET}\n"
+                    break
+                    ;;
+                *)
+                    echo -e "  ${C_GRAY}Skipped.${C_RESET}"
+                    skipped=$((skipped + 1))
+                    ;;
+            esac
+        fi
+
+        if ${execute}; then
+            echo -e "  ${C_BLUE}Running:${C_RESET} ${fix}"
+            if eval "${fix}"; then
+                echo -e "  ${C_GREEN}✔ Fix applied successfully.${C_RESET}"
+                applied=$((applied + 1))
+            else
+                echo -e "  ${C_RED}✖ Fix failed with exit code $?.${C_RESET}"
+                failed=$((failed + 1))
+            fi
+        fi
+        echo ""
+    done
+
+    echo -e "${C_GRAY}────────────────────────────────────────────────────────────${C_RESET}"
+    echo -e "${C_BOLD}Remediation Summary:${C_RESET}"
+    echo -e "  ${C_GREEN}Applied:${C_RESET} ${applied}"
+    echo -e "  ${C_YELLOW}Skipped:${C_RESET} ${skipped}"
+    echo -e "  ${C_RED}Failed:${C_RESET}  ${failed}"
     echo ""
 }

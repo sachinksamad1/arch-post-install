@@ -130,7 +130,7 @@ A rofi-powered control center accessible with a single keybinding. Provides quic
 ### Launch
 
 ```
-Super + M
+Super + D
 ```
 
 ### Menu Options
@@ -147,7 +147,7 @@ Super + M
 The menu is rendered by `rofi` in dmenu mode using a custom glassmorphic theme (`~/.config/rofi/floating-menu.rasi`). Each option dispatches to a dedicated script:
 
 ```
-Super + M  →  rofi (floating-menu.rasi)
+Super + D  →  rofi (floating-menu.rasi)
                  ├─ Toggle Theme    →  toggle_theme.sh  (inline, no terminal)
                  ├─ Change Wallpaper →  wallpaper_picker.sh  (rofi sub-menu)
                  ├─ Update Arch     →  kitty --class floating-term  (terminal)
@@ -312,7 +312,7 @@ Displays detailed system information in a styled floating terminal panel with Ne
 | `Super + Shift + J` | TUI Journal (tui-journal) |
 | `Super + N` | Toggle theme (light/dark) |
 | `Super + Shift + T` | Theme Scheme picker |
-| `Super + M` | **Quick Settings menu** |
+| `Super + D` | **Quick Settings menu** |
 | `Super + Alt + F` | Maximize (monocle) |
 | `Super + F1` | Brightness down |
 | `Super + F2` | Brightness up |
@@ -402,7 +402,7 @@ Drop images into any of these directories:
 ~/.config/hypr/assets/
 ```
 
-Then open the picker with `Super + M` → **Change Wallpaper**.
+Then open the picker with `Super + D` → **Change Wallpaper**.
 
 ### Default Programs
 

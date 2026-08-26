@@ -186,7 +186,11 @@ make dotfiles               # Deploy dotfiles
 make check                  # Run post-installation configuration validation
 make health                 # Run runtime system-health checks
 make doctor                 # Run automated diagnostics & remediation suggestions
+make fix                    # Interactively apply diagnostic remediation commands
 make status                 # Run full system status scorecard
+make zram                   # Configure ZRAM compressed swap
+make btrfs                  # Configure Btrfs Snapper snapshots & snap-pac
+make firewall               # Configure UFW firewall
 make test                   # Execute automated test suite
 make lint                   # Lint scripts with shellcheck
 make help                   # Show all targets
@@ -240,10 +244,12 @@ arch-post-install/
 │   └── test_categories.sh     # Mocked assertion category tests
 ├── modules/
 │   ├── core.sh                # Engine: YAML parsing, logging, checks
-│   ├── system.sh              # System-wide setup (fonts, shell)
+│   ├── system.sh              # System-wide setup (pacman tuning, ZRAM, firewall, shell)
+│   ├── btrfs.sh               # Automated Btrfs snapshot management with Snapper & snap-pac
 │   ├── packages.sh            # Pacman & AUR package installation
 │   ├── services.sh            # Systemd service management
 │   ├── users.sh               # User configuration & locale
+│   ├── flatpak.sh             # Flatpak runtime & app management
 │   └── dotfiles.sh            # Symlink deployment with backup
 ├── profiles/
 │   └── hyprland.sh            # Hyprland environment orchestrator (plugin)
@@ -297,7 +303,7 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 | `SUPER + Space` / `SUPER + R` | Application Launcher (Rofi) |
 | `SUPER + E` | File Manager (Nautilus) |
 | `SUPER + B` | Web Browser (Chromium) |
-| `SUPER + I` / `SUPER + M` | Quick Settings Floating Menu |
+| `SUPER + I` / `SUPER + D` | Quick Settings Floating Menu |
 | `SUPER + V` | Clipboard History Manager |
 | `CTRL + SHIFT + Escape` | Task Manager (btop) |
 

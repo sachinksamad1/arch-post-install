@@ -7,7 +7,7 @@
 
 set -uo pipefail
 
-VERSION="2.1.0"
+VERSION="2.2.0"
 
 # Resolve directories
 CLI_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -66,6 +66,7 @@ Commands:
   check [cat...]     Validate system configuration matches declarative specs
   health [cat...]    Run runtime health, service state, and storage checks
   doctor [cat...]    Analyze issues and provide copy-paste remediation commands
+  fix [cat...]       Interactively apply suggested remediation commands
   status             Run both configuration checks and runtime health checks
   install [mode]     Launch the post-installation setup engine (full|base|dotfiles)
   list [categories]  Display available check categories and system modules
@@ -87,6 +88,8 @@ Categories:
   maintenance        Package updates, orphan hygiene, journal size, timers, mirrors
 
 Options:
+  --fix              Automatically enter remediation mode (with doctor)
+  -y, --yes          Non-interactive mode (auto-confirm remediation fixes)
   -j, --json         Output results as clean JSON
   -v, --verbose      Enable detailed diagnostic output
   -q, --quiet        Quiet mode (show only warnings and failures)
@@ -108,6 +111,8 @@ Examples:
   arch-postinstall check boot network
   arch-postinstall health
   arch-postinstall doctor
+  arch-postinstall doctor --fix
+  arch-postinstall fix -y
   arch-postinstall status --json
   arch-postinstall install full
 EOF
@@ -118,6 +123,8 @@ EOF
 COMMAND=""
 declare -a CATEGORIES=()
 JSON_OUTPUT=false
+DOCTOR_FIX=false
+AUTO_YES=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -128,6 +135,14 @@ while [[ $# -gt 0 ]]; do
         -V|--version)
             echo "arch-postinstall v${VERSION}"
             exit 0
+            ;;
+        --fix)
+            DOCTOR_FIX=true
+            shift
+            ;;
+        -y|--yes)
+            AUTO_YES=true
+            shift
             ;;
         -j|--json)
             JSON_OUTPUT=true
@@ -164,9 +179,13 @@ while [[ $# -gt 0 ]]; do
             CUSTOM_CONFIG="$2"
             shift 2
             ;;
-        check|health|doctor|status|install|list)
+        check|health|doctor|fix|status|install|list)
             if [[ -z "${COMMAND}" ]]; then
                 COMMAND="$1"
+                if [[ "$1" == "fix" ]]; then
+                    COMMAND="doctor"
+                    DOCTOR_FIX=true
+                fi
             else
                 CATEGORIES+=("$1")
             fi
@@ -264,7 +283,7 @@ run_execution() {
                 print_banner "Arch Linux System-Health Engine" "Verifying runtime health, daemon states, storage, and networking"
                 ;;
             doctor)
-                # Doctor banner is printed by run_doctor_analysis
+                # Doctor banner is printed by run_doctor_analysis or run_doctor_fix
                 ;;
             status)
                 print_banner "Arch Linux System Status & Health Dashboard" "Full post-installation configuration & runtime health inspection"
@@ -300,7 +319,11 @@ run_execution() {
 
     # Output formatting & exit handling
     if [[ "${mode}" == "doctor" ]]; then
-        run_doctor_analysis
+        if [[ "${DOCTOR_FIX}" == true ]]; then
+            run_doctor_fix
+        else
+            run_doctor_analysis
+        fi
     elif [[ "${JSON_OUTPUT}" == true ]]; then
         render_json
     else

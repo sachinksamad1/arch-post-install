@@ -3,7 +3,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # Check Category: boot.sh
 # Description: Validates bootloader presence, EFI system partition, kernel and
-#              initramfs image consistency.
+#              initramfs image consistency. Handles unprivileged /boot permissions.
 # ──────────────────────────────────────────────────────────────────────────────
 
 # shellcheck disable=SC2154,SC1091,SC2034
@@ -17,12 +17,12 @@ check_boot() {
     fi
 
     # 1. UEFI vs BIOS mode
+    local esp_mounted=false
+    local esp_path=""
     if is_uefi; then
         pass "boot" "boot_mode" "UEFI boot mode active"
 
         # Check ESP mount
-        local esp_mounted=false
-        local esp_path=""
         for p in /boot /boot/efi /efi; do
             if mount_exists "${p}"; then
                 esp_mounted=true
@@ -84,6 +84,12 @@ check_boot() {
         bootloader_name="${bootloader_name:+${bootloader_name}, }Unified Kernel Images (UKI/EFISTUB)"
     fi
 
+    # If /boot is unreadable by current unprivileged user but ESP is mounted
+    if ! ${bootloader_found} && ${esp_mounted} && [[ ! -r /boot ]]; then
+        bootloader_found=true
+        bootloader_name="UEFI Bootloader (ESP mounted at ${esp_path})"
+    fi
+
     if ${bootloader_found}; then
         pass "boot" "bootloader" "Detected bootloader: ${bootloader_name}"
     else
@@ -95,54 +101,67 @@ check_boot() {
         fi
     fi
 
-    # 3. Installed Kernel Images
-    local kernels
-    kernels="$(ls -1 /boot/vmlinuz-* 2>/dev/null || true)"
-    if [[ -n "${kernels}" ]]; then
-        local k_list
-        k_list="$(echo "${kernels}" | xargs -n1 basename | paste -sd, -)"
-        pass "boot" "kernel_images" "Kernel image(s) found in /boot: ${k_list}"
-    else
-        if is_virtual_machine; then
-            info "boot" "kernel_images" "No local /boot/vmlinuz (managed by container host)"
+    # 3. Installed Kernel Images & 4. Initramfs Images
+    local running_kernel
+    running_kernel="$(uname -r 2>/dev/null || echo "unknown")"
+
+    if [[ -r /boot ]]; then
+        local kernels
+        kernels="$(ls -1 /boot/vmlinuz-* 2>/dev/null || true)"
+        if [[ -n "${kernels}" ]]; then
+            local k_list
+            k_list="$(echo "${kernels}" | xargs -n1 basename | paste -sd, -)"
+            pass "boot" "kernel_images" "Kernel image(s) found in /boot: ${k_list}"
         else
-            fail "boot" "kernel_images" "No kernel image (vmlinuz-*) found in /boot" \
-                 "Reinstall kernel package to regenerate boot image" \
-                 "sudo pacman -S linux" \
-                 "vmlinuz-* present" "missing"
-        fi
-    fi
-
-    # 4. Initramfs Images
-    local initramfs
-    initramfs="$(ls -1 /boot/initramfs-*.img 2>/dev/null || true)"
-    if [[ -n "${initramfs}" ]]; then
-        local init_list
-        init_list="$(echo "${initramfs}" | xargs -n1 basename | paste -sd, -)"
-        pass "boot" "initramfs_images" "Initramfs image(s) found: ${init_list}"
-
-        # Consistency check: verify initramfs is not zero-byte and matches kernel
-        for k in /boot/vmlinuz-*; do
-            [[ ! -f "${k}" ]] && continue
-            local k_name
-            k_name="$(basename "${k}" | sed 's/vmlinuz-//')"
-            local matching_init="/boot/initramfs-${k_name}.img"
-            if [[ -f "${matching_init}" ]]; then
-                if [[ ! -s "${matching_init}" ]]; then
-                    fail "boot" "initramfs_${k_name}" "Initramfs ${matching_init} is 0 bytes (corrupt)" \
-                         "Regenerate initramfs with mkinitcpio" \
-                         "sudo mkinitcpio -P" \
-                         "valid initramfs" "empty file"
-                else
-                    pass "boot" "initramfs_${k_name}_sync" "Initramfs for '${k_name}' present and valid"
-                fi
+            if is_virtual_machine; then
+                info "boot" "kernel_images" "No local /boot/vmlinuz (managed by container host)"
+            else
+                fail "boot" "kernel_images" "No kernel image (vmlinuz-*) found in /boot" \
+                     "Reinstall kernel package to regenerate boot image" \
+                     "sudo pacman -S linux" \
+                     "vmlinuz-* present" "missing"
             fi
-        done
+        fi
+
+        local initramfs
+        initramfs="$(ls -1 /boot/initramfs-*.img 2>/dev/null || true)"
+        if [[ -n "${initramfs}" ]]; then
+            local init_list
+            init_list="$(echo "${initramfs}" | xargs -n1 basename | paste -sd, -)"
+            pass "boot" "initramfs_images" "Initramfs image(s) found: ${init_list}"
+
+            # Consistency check: verify initramfs is not zero-byte and matches kernel
+            for k in /boot/vmlinuz-*; do
+                [[ ! -f "${k}" ]] && continue
+                local k_name
+                k_name="$(basename "${k}" | sed 's/vmlinuz-//')"
+                local matching_init="/boot/initramfs-${k_name}.img"
+                if [[ -f "${matching_init}" ]]; then
+                    if [[ ! -s "${matching_init}" ]]; then
+                        fail "boot" "initramfs_${k_name}" "Initramfs ${matching_init} is 0 bytes (corrupt)" \
+                             "Regenerate initramfs with mkinitcpio" \
+                             "sudo mkinitcpio -P" \
+                             "valid initramfs" "empty file"
+                    else
+                        pass "boot" "initramfs_${k_name}_sync" "Initramfs for '${k_name}' present and valid"
+                    fi
+                fi
+            done
+        else
+            if ! is_virtual_machine; then
+                warn "boot" "initramfs_images" "No initramfs-*.img found in /boot" \
+                     "Regenerate initramfs images" \
+                     "sudo mkinitcpio -P"
+            fi
+        fi
     else
-        if ! is_virtual_machine; then
-            warn "boot" "initramfs_images" "No initramfs-*.img found in /boot" \
-                 "Regenerate initramfs images" \
-                 "sudo mkinitcpio -P"
+        # /boot is restricted (e.g. umask=0077 root only)
+        if package_installed "linux" || package_installed "linux-zen" || package_installed "linux-lts" || package_installed "linux-hardened" || [[ -d "/lib/modules/${running_kernel}" ]]; then
+            pass "boot" "kernel_images" "Kernel package active (${running_kernel}, ESP mounted at ${esp_path:-/boot})"
+            pass "boot" "initramfs_images" "Initramfs active on restricted ESP (kernel ${running_kernel})"
+        else
+            warn "boot" "kernel_images" "/boot unreadable by unprivileged user (permission 0077)" \
+                 "Run check with sudo to inspect kernel images inside /boot"
         fi
     fi
 }

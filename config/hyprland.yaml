@@ -11,6 +11,7 @@ packages:
     - hypridle
     - hyprlock
     - xdg-desktop-portal-hyprland
+    - wlsunset
 
     # Bar & notifications
     - waybar
@@ -66,7 +67,12 @@ packages:
     - wl-clipboard
     - cliphist
 
-    # System tools
+    # Graphics & Hardware Acceleration (AMD/Mesa)
+    - vulkan-radeon
+    - libva-mesa-driver
+    - mesa-vdpau
+
+    # System & Audio tools
     - polkit-kde-agent
     - kwallet
     - kwallet-pam
@@ -79,12 +85,13 @@ packages:
     - pipewire
     - pipewire-pulse
     - pipewire-alsa
+    - libspa-0.2-bluetooth
     - nodejs
     - npm
 
     # Network & DNS
     - trippy
-    - dog
+    - doggo
     - dust
 
     # Theming
