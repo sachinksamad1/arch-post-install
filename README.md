@@ -20,6 +20,7 @@ A highly modular, automated, and visually polished Arch Linux post-installation 
 
 ---
 
+<a id="table-of-contents"></a>
 ## Table of Contents
 
 - [Features](#features)
@@ -36,6 +37,7 @@ A highly modular, automated, and visually polished Arch Linux post-installation 
 - [Customization](#customization)
 - [Contributing](#contributing)
 - [License](#license)
+- [Credits](#credits)
 
 ---
 
@@ -52,6 +54,8 @@ A highly modular, automated, and visually polished Arch Linux post-installation 
 | 🔄 | **Idempotent & Safe**: All validation commands are strictly read-only; installation re-runs use safe flags. |
 | 📜 | **Structured Logging & JSON**: Human-readable colorized reports alongside machine-readable JSON (`--json`). |
 | 🔗 | **Symlinked Dotfiles**: Automated deployment with automatic backups of existing configs. |
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -84,6 +88,8 @@ graph TD
     V[bin/arch-postinstall] -->|check / health / doctor| I
     V -->|inspects runtime| RT(System / Services / Kernel / Storage)
 ```
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -139,6 +145,8 @@ The repository includes a post-installation validation, health, and diagnostics 
 | `3` | `USAGE`| Invalid CLI options or argument syntax |
 | `4` | `DEP`  | Missing critical dependency |
 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
 ---
 
 ## Requirements
@@ -147,6 +155,8 @@ The repository includes a post-installation validation, health, and diagnostics 
 - Non-root user with `sudo` privileges
 - Active internet connection
 - Git installed (`pacman -S git`)
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -158,6 +168,8 @@ cd arch-post-install
 chmod +x install.sh bin/arch-postinstall
 ./install.sh
 ```
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -195,6 +207,8 @@ make test                   # Execute automated test suite
 make lint                   # Lint scripts with shellcheck
 make help                   # Show all targets
 ```
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -260,6 +274,8 @@ arch-post-install/
 └── logs/                      # Timestamped installation logs
 ```
 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
 ---
 
 ## Theming System
@@ -290,6 +306,8 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 5. **GTK/Qt** - System-wide interface preferences (Dark/Light preference & Adwaita themes).
 6. **Superfile / Zellij** - Terminal file manager and multiplexer palette synchronization.
 7. **Wallpapers** - Coordinated dark and light desktop wallpapers via `hyprpaper`.
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -354,6 +372,8 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 | `XF86AudioMute / MicMute` | Mute Output / Microphone |
 | `XF86MonBrightnessUp / Down` | Display Brightness (brightnessctl) |
 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
 ---
 
 ## Included Stack
@@ -374,6 +394,8 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 | **Network** | [NetworkManager](https://wiki.archlinux.org/title/NetworkManager), [iWD](https://iwd.wiki.kernel.org/) |
 | **Security** | [KWallet](https://utils.kde.org/projects/kwalletmanager/), `pam_kwallet` |
 | **Theming** | [Papirus Icons](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme), [Adwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/doc/), [Kvantum](https://github.com/tsujan/Kvantum) |
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -420,6 +442,8 @@ pulseaudio --kill
 systemctl --user restart pipewire pipewire-pulse wireplumber
 ```
 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
 ---
 
 ## Customization
@@ -464,17 +488,23 @@ The workbench supports a plugin-based architecture for desktop environments. To 
 2. Create `profiles/gnome.sh` and define a `setup_gnome()` function.
 3. Add `run_cmd setup_gnome` to the `full` case in `install.sh`.
 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
 ---
 
 ## Contributing
 
 Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for details on our code of conduct and the process for submitting pull requests.
 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
 ---
 
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ---
 
@@ -484,3 +514,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 - [Catppuccin](https://github.com/catppuccin/catppuccin) - Color palettes
 - [LazyVim](https://lazyvim.github.io) - Neovim configuration
 - All open-source contributors
+
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
