@@ -19,7 +19,8 @@ options="󰌌  Input Settings
 󰂎  Power Management
 󰖩  Network Settings
 󰂯  Bluetooth Settings
-󰓃  Audio Mixer"
+󰓃  Audio Mixer
+󰏘  GTK Settings (nwg-look)"
 
 # Show the rofi menu
 selection=$(echo -e "$options" | rofi -dmenu -i \
@@ -55,5 +56,9 @@ case "$selection" in
 *"Audio Mixer"*)
   $TERM_APP --title "Audio Mixer (WireMix)" --class large-floating-term wiremix
   ;;
+*"GTK Settings"*)
+  nwg-look &
+  ;;
 esac
+
 

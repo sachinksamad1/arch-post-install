@@ -8,6 +8,8 @@ local programs = {
     fileManager = "nautilus",
     menu        = "rofi -show drun",
     browser     = "chromium",
+    gtkSettings = "nwg-look",
 }
 
 return programs
+

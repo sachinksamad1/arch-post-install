@@ -33,6 +33,7 @@ A personal Hyprland configuration with a clean, minimal aesthetic featuring smoo
 | `playerctl` | Media player control |
 | `grimblast` | Screenshot utility |
 | `jq` | JSON processor (used by scripts) |
+| `nwg-look` | GTK configuration & theme editor |
 | `fastfetch` | System info (optional, for About PC) |
 | `polkit-kde-authentication-agent-1` | Authentication agent |
 
@@ -310,6 +311,7 @@ Displays detailed system information in a styled floating terminal panel with Ne
 | `Super + B` | Open browser |
 | `Super + Shift + C` | Calendar & Tasks (calcure) |
 | `Super + Shift + J` | TUI Journal (tui-journal) |
+| `Super + Shift + G` | GTK Configuration Tool (`nwg-look`) |
 | `Super + N` | Toggle theme (light/dark) |
 | `Super + Shift + T` | Theme Scheme picker |
 | `Super + D` | **Quick Settings menu** |
@@ -360,11 +362,12 @@ Key floating rules defined in `windowrules.conf`:
 | Class / Pattern | Rule |
 |-----------------|------|
 | `floating-term` | Float, 650×450, centered — used by Quick Settings sub-panels |
-| `pavucontrol`, `blueman-manager`, `nm-*` | Float |
+| `pavucontrol`, `blueman-manager`, `nm-*`, `nwg-look` | Float (nwg-look: 850×600) |
 | `imv`, `mpv`, `feh` | Float (feh: 1000×600) |
 | `nautilus`, `thunar` | Float, 1000×600 |
 | File dialogs (Open/Save) | Float, 800×500 |
 | All floating windows | Auto-centered |
+
 
 ---
 

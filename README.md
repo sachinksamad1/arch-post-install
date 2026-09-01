@@ -364,6 +364,7 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 | `SUPER + Shift + Q` | Exit Hyprland Session |
 | `SUPER + Shift + C` | Calendar & Tasks (Calcure TUI) |
 | `SUPER + Shift + J` | Daily Journal & Notes (tui-journal) |
+| `SUPER + Shift + G` | GTK Configuration Tool (nwg-look) |
 | `SUPER + F5` | Firmware Update Check |
 | `Print` / `SUPER + Shift + S` | Snipping Tool Screenshot (Area & Clipboard) |
 | `ALT + Print` | Screenshot Active Window |
@@ -393,7 +394,8 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 | **Audio** | [PipeWire](https://pipewire.org/), [WirePlumber](https://pipewire.pages.freedesktop.org/wireplumber/) |
 | **Network** | [NetworkManager](https://wiki.archlinux.org/title/NetworkManager), [iWD](https://iwd.wiki.kernel.org/) |
 | **Security** | [KWallet](https://utils.kde.org/projects/kwalletmanager/), `pam_kwallet` |
-| **Theming** | [Papirus Icons](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme), [Adwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/doc/), [Kvantum](https://github.com/tsujan/Kvantum) |
+| **Theming** | [nwg-look](https://github.com/nwg-piotr/nwg-look) (GTK Configuration Tool), [Papirus Icons](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme), [Adwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/doc/), [Kvantum](https://github.com/tsujan/Kvantum) |
+
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 

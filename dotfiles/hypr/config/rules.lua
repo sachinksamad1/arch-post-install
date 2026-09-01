@@ -37,9 +37,19 @@ hl.window_rule({
 -- Floating rules for common utilities
 hl.window_rule({
 	name = "floating-utilities",
-	match = { class = "^(pavucontrol|blueman-manager|nm-connection-editor|nm-applet)$" },
+	match = { class = "^(pavucontrol|blueman-manager|nm-connection-editor|nm-applet|nwg-look)$" },
 	float = true,
 })
+
+-- Explicit size for GTK Settings (nwg-look)
+hl.window_rule({
+	name = "nwg-look-rules",
+	match = { class = "^(nwg-look)$" },
+	float = true,
+	size = { 850, 600 },
+	center = true,
+})
+
 
 -- Floating media
 hl.window_rule({
