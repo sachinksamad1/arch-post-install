@@ -67,6 +67,7 @@ if [ "$TARGET_MODE" == "light" ]; then
     cp "$WAYBAR_CONFIG/colors-light.css" "$WAYBAR_CONFIG/colors.css"
   fi
   pkill -SIGUSR2 waybar 2>/dev/null || true
+  swaync-client -rs 2>/dev/null || true
 
   # Kitty colors
   if [ -f "$KITTY_CONFIG/${SCHEME}-light.conf" ]; then
@@ -127,6 +128,7 @@ else
     cp "$WAYBAR_CONFIG/colors-dark.css" "$WAYBAR_CONFIG/colors.css"
   fi
   pkill -SIGUSR2 waybar 2>/dev/null || true
+  swaync-client -rs 2>/dev/null || true
 
   # Kitty colors
   if [ -f "$KITTY_CONFIG/${SCHEME}-dark.conf" ]; then

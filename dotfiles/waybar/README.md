@@ -23,6 +23,7 @@ To ensure all modules and scripts function correctly, please install the followi
 - `systemd`: For power management commands (reboot, shutdown, suspend).
 
 ### Utilities & Scripts
+- `swaync`: SwayNotificationCenter for notification tray integration and control panel.
 - `playerctl`: MPRIS media player controller.
 - `jq`: Required for processing keyboard layout data.
 - `pacman-contrib`: Provides `checkupdates` for the update indicator.
@@ -53,7 +54,7 @@ The bar is divided into three sections:
     - `hyprland/workspaces`: Interactive desktop switcher.
     - `hyprland/window`: Currently active window title.
 - **Modules Center**: `clock` (Date & Time).
-- **Modules Right**: `group/media` (Hover-expanding MPRIS controller), `group/audio`, `pulseaudio#microphone`, `bluetooth`, `network`, `cpu`, `temperature`, `memory`, `custom/clipboard`, `custom/language`, `battery`, `custom/power`, and `group/tray`.
+- **Modules Right**: `group/media` (Hover-expanding MPRIS controller), `group/audio`, `pulseaudio#microphone`, `bluetooth`, `network`, `cpu`, `temperature`, `memory`, `custom/clipboard`, `custom/language`, `battery`, `custom/notification` (Notification Center & DND toggle), `custom/power`, and `group/tray`.
 
 ---
 

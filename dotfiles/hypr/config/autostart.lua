@@ -10,7 +10,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("~/.config/hypr/scripts/xdg-portal-hyprland.sh")
 
     hl.exec_cmd("waybar")
-    hl.exec_cmd("dunst")
+    hl.exec_cmd("command -v swaync >/dev/null 2>&1 && swaync || dunst")
     hl.exec_cmd("hyprpaper")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("/usr/bin/kwalletd6")

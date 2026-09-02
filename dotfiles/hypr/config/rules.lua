@@ -124,3 +124,7 @@ for i = 1, 1 do
 		persistent = true,
 	})
 end
+
+-- Layer Rules for Notification Center
+hl.layer_rule({ match = { namespace = "swaync-control-center" }, blur = true })
+hl.layer_rule({ match = { namespace = "swaync-notification-window" }, blur = true })

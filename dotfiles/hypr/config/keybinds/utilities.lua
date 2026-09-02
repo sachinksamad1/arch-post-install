@@ -22,9 +22,11 @@ hl.bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("hyprctl clients -j | jq -r '.[].
 -- ------------------------------------------------------------------------------
 
 -- Theme & UI Toggles
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("~/.config/hypr/scripts/clipboard.sh"))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle_theme.sh"))
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("~/.config/hypr/scripts/floating_menu.sh"))
+hl.bind(mainMod .. " + V",         hl.dsp.exec_cmd("~/.config/hypr/scripts/clipboard.sh"))
+hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("~/.config/hypr/scripts/notification_center.sh toggle"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("~/.config/hypr/scripts/notification_center.sh toggle"))
+hl.bind(mainMod .. " + ALT + T",   hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle_theme.sh"))
+hl.bind(mainMod .. " + D",         hl.dsp.exec_cmd("~/.config/hypr/scripts/floating_menu.sh"))
 
 -- ------------------------------------------------------------------------------
 -- --- HARDWARE CONTROLS ---

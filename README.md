@@ -297,7 +297,7 @@ The unified theme engine uses **Catppuccin** color palettes by default for a con
 | **Rosé Pine** | Rosé Pine | Rosé Pine Dawn | Pastel, dreamy, soft pink and lavender tones. |
 | **Default Dark/Light** | Dark Theme | Light Theme | Standard high-contrast dark and light system themes. |
 
-Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive Theme Scheme Picker with **`SUPER + Shift + T`**. The system synchronizes the following components in real time:
+Toggle dark/light mode instantly with **`SUPER + Alt + T`**, or open the interactive Theme Scheme Picker with **`SUPER + Shift + T`**. The system synchronizes the following components in real time:
 
 1. **Hyprland** - Border gradients, active opacity, shadow colors, and layer blurs via `theme.lua`.
 2. **Waybar** - CSS variables for background, text, borders, and accent colors.
@@ -321,7 +321,8 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 | `SUPER + Space` / `SUPER + R` | Application Launcher (Rofi) |
 | `SUPER + E` | File Manager (Nautilus) |
 | `SUPER + B` | Web Browser (Chromium) |
-| `SUPER + I` / `SUPER + D` | Quick Settings Floating Menu |
+| `SUPER + I` / `SUPER + D` | Quick Settings Floating Menu (Control Center) |
+| `SUPER + N` / `SUPER + Shift + N` | Toggle Notification Center (SwayNC) |
 | `SUPER + V` | Clipboard History Manager |
 | `CTRL + SHIFT + Escape` | Task Manager (btop) |
 
@@ -357,7 +358,8 @@ Toggle dark/light mode instantly with **`SUPER + N`**, or open the interactive T
 ### System, Utilities & Screenshots
 | Keybinding | Action |
 |------------|--------|
-| `SUPER + N` | Toggle Dark / Light Mode |
+| `SUPER + N` / `SUPER + Shift + N` | Toggle Notification Center (SwayNC) |
+| `SUPER + Alt + T` | Toggle Dark / Light Mode |
 | `SUPER + Shift + T` | Open Theme Scheme Picker |
 | `SUPER + L` | Lock Screen (hyprlock) |
 | `SUPER + Escape` | Power Management Menu |

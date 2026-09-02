@@ -292,6 +292,29 @@ window#waybar {
   border-radius: 8px;
 }
 
+#custom-notification {
+    color: @accent-blue;
+    padding: 0 10px;
+    margin: 2px 0;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+#custom-notification:hover {
+    color: @accent-purple;
+    background: alpha(@accent-purple, 0.15);
+    border-radius: 8px;
+}
+
+#custom-notification.notification {
+    color: @accent-orange;
+}
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none {
+    color: @accent-red;
+}
+
 #custom-power {
     color: @accent-red;
     padding: 0 15px;

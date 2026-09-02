@@ -1,0 +1,203 @@
+/* SwayNotificationCenter Style */
+
+@define-color cc-bg rgba(26, 27, 38, 0.85);
+@define-color notif-bg rgba(36, 40, 59, 0.90);
+@define-color notif-border rgba(255, 255, 255, 0.1);
+@define-color text-color #c0caf5;
+@define-color text-muted #7aa2f7;
+@define-color accent-blue #7aa2f7;
+@define-color accent-purple #bb9af7;
+@define-color accent-green #9ece6a;
+@define-color accent-red #f7768e;
+@define-color accent-orange #ff9e64;
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", sans-serif;
+  font-size: 14px;
+}
+
+/* Control Center Panel */
+.control-center {
+  background-color: @cc-bg;
+  border: 1px solid @notif-border;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Notification Window (Popups) */
+.notification-row {
+  outline: none;
+  margin: 8px 0;
+}
+
+.notification {
+  background-color: @notif-bg;
+  border: 1px solid @notif-border;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.notification-content {
+  margin: 6px;
+}
+
+.summary {
+  font-size: 15px;
+  font-weight: bold;
+  color: @accent-blue;
+}
+
+.time {
+  font-size: 12px;
+  color: alpha(@text-color, 0.5);
+  margin-right: 12px;
+}
+
+.body {
+  font-size: 13px;
+  color: @text-color;
+  margin-top: 4px;
+}
+
+/* Title Widget */
+.widget-title {
+  margin: 4px;
+}
+
+.widget-title > label {
+  font-size: 18px;
+  font-weight: bold;
+  color: @accent-purple;
+}
+
+.widget-title > button {
+  background: alpha(@accent-red, 0.15);
+  color: @accent-red;
+  border: 1px solid alpha(@accent-red, 0.3);
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.widget-title > button:hover {
+  background: @accent-red;
+  color: #1a1b26;
+}
+
+/* DND Widget */
+.widget-dnd {
+  margin: 8px 4px;
+  background: alpha(@text-color, 0.05);
+  border-radius: 10px;
+  padding: 6px 12px;
+}
+
+.widget-dnd > label {
+  font-size: 14px;
+  font-weight: 500;
+  color: @text-color;
+}
+
+.widget-dnd > switch {
+  border-radius: 12px;
+  background: alpha(@text-color, 0.2);
+}
+
+.widget-dnd > switch:checked {
+  background: @accent-red;
+}
+
+.widget-dnd > switch slider {
+  border-radius: 12px;
+  background: @text-color;
+}
+
+/* MPRIS Media Player */
+.widget-mpris {
+  background: alpha(@text-color, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 8px 4px;
+  border: 1px solid @notif-border;
+}
+
+.widget-mpris-player {
+  padding: 4px;
+}
+
+.widget-mpris-title {
+  font-weight: bold;
+  font-size: 15px;
+  color: @accent-blue;
+}
+
+.widget-mpris-subtitle {
+  font-size: 13px;
+  color: alpha(@text-color, 0.7);
+}
+
+/* Sliders (Volume / Backlight) */
+.widget-volume,
+.widget-backlight {
+  background: alpha(@text-color, 0.05);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 6px 4px;
+}
+
+.widget-volume > label,
+.widget-backlight > label {
+  font-size: 16px;
+  color: @accent-blue;
+  margin-right: 8px;
+}
+
+scale trough {
+  border-radius: 6px;
+  background-color: alpha(@text-color, 0.15);
+  min-height: 8px;
+  min-width: 100px;
+}
+
+scale highlight {
+  border-radius: 6px;
+  background-color: @accent-blue;
+  min-height: 8px;
+}
+
+/* Quick Action Buttons Grid */
+.widget-buttons-grid {
+  margin: 8px 4px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+  background: alpha(@text-color, 0.06);
+  border: 1px solid @notif-border;
+  border-radius: 10px;
+  color: @text-color;
+  padding: 10px 14px;
+  margin: 4px;
+  transition: all 0.2s ease;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+  background: alpha(@accent-blue, 0.2);
+  border-color: @accent-blue;
+  color: @accent-blue;
+}
+
+/* Close & Action Buttons */
+.close-button {
+  background: transparent;
+  color: alpha(@text-color, 0.6);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.close-button:hover {
+  background: alpha(@accent-red, 0.2);
+  color: @accent-red;
+}

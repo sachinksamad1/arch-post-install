@@ -7,28 +7,30 @@
 set -euo pipefail
 
 HYPR_DIR="$HOME/.config/hypr"
-# Prefer $TERMINAL env var; fall back to kitty
+SCRIPTS_DIR="$HOME/.config/hypr/scripts"
 TERM_APP="${TERMINAL:-kitty}"
 
 # Menu entries with Nerd Font icons
-options="󰌌  Input Settings
+options="󰌍  Control Center Menu
+󰌌  Input Settings
 󰌓  Key Bindings
 󱕰  Additional Bindings
 󰍹  Monitor Settings
 󰒲  Hypridle Settings
-󰂎  Power Management
-󰖩  Network Settings
-󰂯  Bluetooth Settings
-󰓃  Audio Mixer
-󰏘  GTK Settings (nwg-look)"
+󰂎  Power Management (Hyprlock)
+󰂚  Notification Settings"
 
 # Show the rofi menu
 selection=$(echo -e "$options" | rofi -dmenu -i \
   -p "  Settings" \
+  -mesg "  Hyprland Configuration Editor" \
   -theme ~/.config/rofi/floating-menu.rasi)
 
 # Handle selection
 case "$selection" in
+*"Control Center Menu"*)
+  bash "$SCRIPTS_DIR/floating_menu.sh"
+  ;;
 *"Input Settings"*)
   $TERM_APP --title "Input Settings" --class large-floating-term nvim "$HYPR_DIR/config/input.lua"
   ;;
@@ -47,18 +49,13 @@ case "$selection" in
 *"Power Management"*)
   $TERM_APP --title "Power Management" --class large-floating-term nvim "$HYPR_DIR/hyprlock.conf"
   ;;
-*"Network Settings"*)
-  $TERM_APP --title "Network Settings (Impala)" --class large-floating-term impala
-  ;;
-*"Bluetooth Settings"*)
-  $TERM_APP --title "Bluetooth Settings (Bluetui)" --class large-floating-term bluetui
-  ;;
-*"Audio Mixer"*)
-  $TERM_APP --title "Audio Mixer (WireMix)" --class large-floating-term wiremix
-  ;;
-*"GTK Settings"*)
-  nwg-look &
+*"Notification Settings"*)
+  if [ -f "$HOME/.config/swaync/config.json" ]; then
+    $TERM_APP --title "Notification Settings" --class large-floating-term nvim "$HOME/.config/swaync/config.json"
+  elif [ -f "$HOME/.config/dunst/dunstrc" ]; then
+    $TERM_APP --title "Notification Settings" --class large-floating-term nvim "$HOME/.config/dunst/dunstrc"
+  else
+    $TERM_APP --title "Notification Settings" --class large-floating-term nvim "$HOME/.config/swaync/config.json"
+  fi
   ;;
 esac
-
-

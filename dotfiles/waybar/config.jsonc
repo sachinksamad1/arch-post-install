@@ -21,6 +21,7 @@
     "custom/clipboard",
     "custom/language",
     "battery",
+    "custom/notification",
     "custom/power",
     "group/tray",
   ],
@@ -168,6 +169,26 @@
     "on-click-right": "~/.config/waybar/scripts/cliphist.sh --wipe",
     "tooltip": true,
     "tooltip-format": "Right Click to Clear",
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "󱅫",
+      "none": "󰂚",
+      "dnd-notification": "󱅯",
+      "dnd-none": "󰂛",
+      "inhibited-notification": "󱅫",
+      "inhibited-none": "󰂚",
+      "dnd-inhibited-notification": "󱅯",
+      "dnd-inhibited-none": "󰂛"
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -df -sw",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
   },
   "custom/power": {
     "format": "",

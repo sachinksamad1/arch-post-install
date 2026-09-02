@@ -7,7 +7,9 @@ local p = require("config.programs")
 local mainMod = "SUPER"
 
 -- Hot Keys / Programs
-hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle_theme.sh"))
+hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("~/.config/hypr/scripts/notification_center.sh toggle"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("~/.config/hypr/scripts/notification_center.sh toggle"))
+hl.bind(mainMod .. " + ALT + T",   hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle_theme.sh"))
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("~/.config/hypr/scripts/theme_picker.sh"))
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd("nwg-look"))
 hl.bind(mainMod .. " + D",         hl.dsp.exec_cmd("~/.config/hypr/scripts/floating_menu.sh"))

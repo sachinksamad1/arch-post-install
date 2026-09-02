@@ -16,7 +16,7 @@ A personal Hyprland configuration with a clean, minimal aesthetic featuring smoo
 | [Hyprland](https://github.com/hyprwm/Hyprland) | Wayland compositor |
 | [Waybar](https://github.com/Alexays/Waybar) | Status bar |
 | [Rofi](https://github.com/lbonn/rofi) | App launcher & menus |
-| [Dunst](https://github.com/dunst-project/dunst) | Notification daemon |
+| [SwayNC](https://github.com/ErikReider/SwayNotificationCenter) / [Dunst](https://github.com/dunst-project/dunst) | Notification center & daemon |
 | [Hyprpaper](https://github.com/hyprwm/hyprpaper) | Wallpaper daemon |
 | [Hypridle](https://github.com/hyprwm/hypridle) | Idle daemon |
 | [Hyprlock](https://github.com/hyprwm/hyprlock) | Screen locker |
@@ -108,6 +108,7 @@ hypr/
 │
 ├── scripts/                   # Automation scripts
 │   ├── floating_menu.sh       # ⚡ Quick Settings floating menu
+│   ├── notification_center.sh # 󰂚 Notification Center controller (SwayNC/Dunst)
 │   ├── toggle_theme.sh        # 🌗 Light/Dark theme toggle
 │   ├── theme_picker.sh        # 󰸉 Desktop theme scheme picker
 │   ├── wallpaper_picker.sh    # 🖼️ Wallpaper picker with image previews
@@ -124,38 +125,40 @@ hypr/
 
 ---
 
-## ⚡ Floating Quick Settings Menu
+## ⚡ Floating Quick Settings Menu (Control Center)
 
-A rofi-powered control center accessible with a single keybinding. Provides quick access to common system tasks without opening a terminal.
+A rofi-powered control center organized into **5 functional category hubs** with breadcrumb (`← Back`) navigation, accessible with a single keybinding.
 
 ### Launch
 
 ```
-Super + D
+Super + D / Super + I
 ```
 
-### Menu Options
+### Menu Structure & Hubs
 
-| Entry | Icon | Action | Implementation |
-|-------|------|--------|----------------|
-| **Toggle Theme** | 󰖙 / 󰖔 | Switch between light and dark mode | `toggle_theme.sh` |
-| **Change Wallpaper** | 󰋩 | Browse wallpapers with image previews | `wallpaper_picker.sh` |
-| **Update Arch Linux** | 󰣇 | Run full system update | `update_arch.sh` |
-| **About This PC** | 󰍹 | View system information | `about_pc.sh` |
+| Category Hub | Icon | Contents & Tools | Implementation |
+|--------------|------|-------------------|----------------|
+| **Appearance & Theming** | 🎨 | Light/Dark Toggle, Theme Scheme Picker, Wallpaper Grid, GTK (nwg-look) | `toggle_theme.sh`, `theme_picker.sh`, `wallpaper_picker.sh`, `nwg-look` |
+| **Quick Controls & Devices** | 📡 | Notification Center (SwayNC), Wi-Fi (Impala), Bluetooth (Bluetui), Audio Mixer (WireMix), Clipboard History | `notification_center.sh`, `impala`, `bluetui`, `wiremix`, `clipboard.sh` |
+| **System & Maintenance** | 📦 | Update Checker, Arch pacman update, AUR update, Device Firmware, About This PC | `check_updates.sh`, `update_arch.sh`, `aur_update.sh`, `firmware_update.sh`, `about_pc.sh` |
+| **Configuration & Dotfiles** |  | Input/Touchpad, Core Keybindings, Utility Bindings, Monitors, Hypridle, Hyprlock, SwayNC | Config editors via `nvim` in floating terminals |
+| **Power & Session** | ⏻ | Lock Session, Suspend, Reboot, Power Off, Logout | `hyprlock`, `systemctl`, `hyprctl dispatch exit` |
 
 ### How It Works
 
-The menu is rendered by `rofi` in dmenu mode using a custom glassmorphic theme (`~/.config/rofi/floating-menu.rasi`). Each option dispatches to a dedicated script:
+The menu is rendered by `rofi` in dmenu mode using a custom glassmorphic theme (`~/.config/rofi/floating-menu.rasi`). Each category hub provides a dedicated submenu with a **`󰌍  Back to Main Menu`** breadcrumb:
 
 ```
-Super + D  →  rofi (floating-menu.rasi)
-                 ├─ Toggle Theme    →  toggle_theme.sh  (inline, no terminal)
-                 ├─ Change Wallpaper →  wallpaper_picker.sh  (rofi sub-menu)
-                 ├─ Update Arch     →  kitty --class floating-term  (terminal)
-                 └─ About This PC   →  kitty --class floating-term  (terminal)
+Super + D / Super + I  →  rofi (floating-menu.rasi)
+                           ├─ 🎨 Appearance & Theming     →  Theme · Scheme · Wallpapers · GTK
+                           ├─ 📡 Quick Controls & Devices →  Notifications · Wi-Fi · Bluetooth · Audio · Clips
+                           ├─ 📦 System & Maintenance     →  Updates (Arch, AUR, Firmware) · About PC
+                           ├─  Configuration & Dotfiles  →  Keybinds · Monitors · Input · Rules · Daemons
+                           └─ ⏻ Power & Session           →  Lock · Suspend · Reboot · Power Off · Logout
 ```
 
-Terminal-based actions spawn a **floating kitty window** (class `floating-term`) that is automatically floated, centered, and sized to `650×450` via a window rule in `windowrules.conf`.
+Terminal-based actions spawn a **floating kitty window** (classes `floating-term`, `medium-floating-term`, or `large-floating-term`) that is automatically floated, centered, and sized via window rules in `rules.lua`.
 
 ---
 
@@ -312,9 +315,10 @@ Displays detailed system information in a styled floating terminal panel with Ne
 | `Super + Shift + C` | Calendar & Tasks (calcure) |
 | `Super + Shift + J` | TUI Journal (tui-journal) |
 | `Super + Shift + G` | GTK Configuration Tool (`nwg-look`) |
-| `Super + N` | Toggle theme (light/dark) |
+| `Super + N` / `Super + Shift + N` | **Toggle Notification Center** |
+| `Super + Alt + T` | Toggle theme (light/dark) |
 | `Super + Shift + T` | Theme Scheme picker |
-| `Super + D` | **Quick Settings menu** |
+| `Super + D` / `Super + I` | **Quick Settings menu** |
 | `Super + Alt + F` | Maximize (monocle) |
 | `Super + F1` | Brightness down |
 | `Super + F2` | Brightness up |

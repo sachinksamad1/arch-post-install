@@ -15,6 +15,7 @@ packages:
 
     # Bar & notifications
     - waybar
+    - swaync
     - dunst
 
     # Launcher
@@ -145,6 +146,7 @@ dotfiles:
   - superfile
   - calcure
   - tui-journal
+  - swaync
 
 executables:
   - hypr/scripts
